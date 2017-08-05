@@ -1,0 +1,23 @@
+---
+- name: install postgres
+  apt:
+    pkg: "{{item}}"
+    state: installed
+    update_cache: true
+  with_items:  
+    - postgresql
+    - python-psycopg2
+
+- name: create specific  database
+  postgresql_db:
+    name: "{{pg_db}}"
+  become: true
+  become_user: postgres
+
+- name: create specific user
+  postgresql_user:
+    db: "{{pg_db}}"
+    name: "{{pg_user}}"
+    password: "{{pg_password}}"
+  become: true
+  become_user: postgres
